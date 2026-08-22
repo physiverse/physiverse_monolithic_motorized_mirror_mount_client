@@ -41,6 +41,10 @@ class SerialTransport:
         self.ser.write((text + "\n").encode())
         self.ser.flush()
 
+    def send_raw(self, data):
+        self.ser.write(data)
+        self.ser.flush()
+
     def recv(self):
         return self.ser.read(4096)
 
@@ -85,6 +89,9 @@ class WifiTransport:
 
     def send_line(self, text):
         self.sock.sendall((text + "\n").encode())
+
+    def send_raw(self, data):
+        self.sock.sendall(data)
 
     def recv(self):
         return self.sock.recv(4096)

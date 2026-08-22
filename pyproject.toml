@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "physiverse-monolithic-motorized-mirror-mount-client"
-version = "0.1.0"
+version = "0.2.0"
 description = "Client for the Physiverse motorized mirror mount firmware (USB serial + WiFi)"
 readme = "README.md"
 requires-python = ">=3.9"

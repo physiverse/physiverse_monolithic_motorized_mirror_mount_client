@@ -52,19 +52,20 @@ Or over USB (no password needed — physical access is trust):
 mount connect --usb
 ```
 
-Then type firmware commands directly (`?` lists them). Highlights:
+Then type commands directly (`?` lists them). The day-to-day safe set:
 
 | Command | Description |
 |---------|-------------|
 | `seekN <target> <speed>` | Closed-loop move axis N to sensor value `target` |
-| `home` | Home both axes |
-| `mN <speed> [ms]` | Raw drive motor N |
-| `s` | Stop both motors |
+| `homeN [speed]` / `home` | Park one axis / both axes at their home positions |
+| `tickN <±n> [spd] [ms]` | Fine adjustment: small continuous nudge of axis N (sign = direction) |
+| `s` | Stop both motors immediately |
 | `r` | Read both sensors |
+| `status` | Report position/range/home for both axes |
 
-See the firmware repo's `PROTOCOL.md` for the full command reference,
-including calibration commands (`setrangeN`, `sethomeN`, `setpolN`, `probeN`)
-— all of which work through this client on either transport.
+Calibration and low-level motor commands exist in the firmware but are
+intentionally not documented here — see the firmware repo's `PROTOCOL.md`
+if you know you need them (USB recommended).
 
 One-shot status check:
 

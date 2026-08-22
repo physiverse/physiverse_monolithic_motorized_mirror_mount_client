@@ -58,6 +58,16 @@ def interactive(tr):
     print("connected — type commands (? for help), Ctrl-C or Ctrl-D to quit")
     stdin_fd = sys.stdin.fileno()
     inbuf = bytearray()
+    is_serial = isinstance(tr, SerialTransport)
+    old_attrs = None
+    if is_serial:
+        # cbreak: per-keystroke forwarding, no local echo -- the firmware
+        # echoes serial input itself, so line mode would double every char.
+        import termios
+        import tty
+
+        old_attrs = termios.tcgetattr(stdin_fd)
+        tty.setcbreak(stdin_fd)
     try:
         while True:
             readable, _, _ = select.select([stdin_fd, tr], [], [])
@@ -70,9 +80,16 @@ def interactive(tr):
                 sys.stdout.flush()
             if stdin_fd in readable:
                 chunk = os.read(stdin_fd, 4096)
-                if not chunk:  # EOF (Ctrl-D): let pending replies land, then quit
+                if not chunk:  # EOF (Ctrl-D)
                     pump(tr, max_wait=1.0, quiet=0.3)
                     return 0
+                if is_serial:
+                    for byte in chunk:
+                        if byte == 0x04:  # Ctrl-D
+                            pump(tr, max_wait=1.0, quiet=0.3)
+                            return 0
+                        tr.send_raw(bytes([byte]))  # device echoes it back
+                    continue
                 inbuf += chunk
                 while b"\n" in inbuf:
                     line, _, rest = inbuf.partition(b"\n")
@@ -83,6 +100,10 @@ def interactive(tr):
     except KeyboardInterrupt:
         pass
     finally:
+        if old_attrs is not None:
+            import termios
+
+            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old_attrs)
         tr.close()
     return 0
 
