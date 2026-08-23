@@ -6,3 +6,13 @@ dist/
 .venv/
 venv/
 .DS_Store
+
+# Manual: only the built PDF ships to customers, not the LaTeX source.
+docs/*.tex
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.toc
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.synctex.gz
