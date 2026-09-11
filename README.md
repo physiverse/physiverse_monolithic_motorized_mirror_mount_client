@@ -12,7 +12,7 @@ authentication.
 pip install .          # or: pipx install .
 ```
 
-Provides the `mount` command. You can also run it without installing:
+Provides the `physiverse` command. You can also run it without installing:
 
 ```bash
 python3 -m mount_client --help    # pyserial must be installed
@@ -27,8 +27,8 @@ macOS / Linux only (uses `select` on the serial fd).
 2. Provision WiFi credentials and set a command password:
 
    ```bash
-   mount provision --ssid MyNetwork --wifi-password wifipass \
-                   --device-password mountpass
+   physiverse provision --ssid MyNetwork --wifi-password wifipass \
+                        --device-password mountpass
    ```
 
    The client auto-detects the serial port (`--port` overrides), saves the
@@ -43,13 +43,13 @@ mDNS; the exact name is shown at provisioning time.
 Interactive session over WiFi (authenticated):
 
 ```bash
-mount connect mirrormount-ac88.local mountpass
+physiverse connect mirrormount-ac88.local mountpass
 ```
 
 Or over USB (no password needed — physical access is trust):
 
 ```bash
-mount connect --usb
+physiverse connect --usb
 ```
 
 Then type commands directly (`?` lists them). The day-to-day safe set:
@@ -70,14 +70,14 @@ if you know you need them (USB recommended).
 One-shot status check:
 
 ```bash
-mount status mirrormount-ac88.local mountpass   # WiFi
-mount status --usb                              # USB
+physiverse status mirrormount-ac88.local mountpass   # WiFi
+physiverse status --usb                              # USB
 ```
 
 ## Other commands
 
 ```bash
-mount factory-reset        # USB only: clears wifi + command password
+physiverse factory-reset        # USB only: clears wifi + command password
                            # (axis calibration is kept)
 ```
 
@@ -86,8 +86,8 @@ mount factory-reset        # USB only: clears wifi + command password
 - **"no USB serial ports found"** — check the cable/port; on macOS the board
   shows up as `/dev/cu.usbmodem*`.
 - **"multiple serial ports found"** — pass the one you want:
-  `mount connect --usb /dev/cu.usbmodem3101`.
-- **WiFi connect fails** — confirm the password with `mount status --usb`
+  `physiverse connect --usb /dev/cu.usbmodem3101`.
+- **WiFi connect fails** — confirm the password with `physiverse status --usb`
   (it prints `cmd-password=set/UNSET`), or re-provision.
 - **Motors don't move** — VIN must be powered (5–12 V); USB power alone runs
   the logic but not the motors.

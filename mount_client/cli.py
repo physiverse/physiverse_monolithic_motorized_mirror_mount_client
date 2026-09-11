@@ -155,11 +155,11 @@ def cmd_provision(args):
             print("\nprovisioning complete.")
             if name:
                 pw_hint = " <device-password>" if args.device_password else ""
-                print(f"connect over WiFi with:\n  mount connect {name}{pw_hint}")
+                print(f"connect over WiFi with:\n  physiverse connect {name}{pw_hint}")
         else:
             print(
                 "\nstill not connected after 30s — check SSID/password/signal.\n"
-                "Run `mount status --usb` to retry."
+                "Run `physiverse status --usb` to retry."
             )
             return 1
     finally:
@@ -207,7 +207,7 @@ def add_transport_args(p):
 
 def build_parser():
     ap = argparse.ArgumentParser(
-        prog="mount",
+        prog="physiverse",
         description="Client for the Physiverse motorized mirror mount.",
     )
     sub = ap.add_subparsers(dest="cmd", required=True)

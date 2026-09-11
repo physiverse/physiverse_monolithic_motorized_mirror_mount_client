@@ -12,7 +12,7 @@ license = { text = "MIT" }
 dependencies = ["pyserial>=3.5"]
 
 [project.scripts]
-mount = "mount_client.cli:main"
+physiverse = "mount_client.cli:main"
 
 [tool.setuptools]
 packages = ["mount_client"]
